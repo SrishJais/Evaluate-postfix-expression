@@ -1,0 +1,111 @@
+//Convert infix to postfix expression
+#include <stdio.h>
+#define MAX 100
+void push(int x);
+char pop();
+int precedence(char x);
+int associativity(char x);
+char stack[MAX];
+int top=-1;
+int main() 
+{
+char infix[100],e,ans;
+int i;
+printf("\nEnter infix expression:");
+scanf("%s",infix);
+for(i=0;infix[i]!='\0';i++)
+{
+    if((infix[i]>='A' && infix[i]<='Z')||(infix[i]>='a' && infix[i]<='z')||(infix[i]>='0' && infix[i]<='9'))
+    {
+        printf("%c",infix[i]);
+    }
+    else if(infix[i]=='(')
+    {
+        push(infix[i]);
+    }
+    else if(infix[i]==')')
+    {
+        while(stack[top]!='(')
+        {
+            e=pop();
+            
+            printf("%c",e);
+        }
+        pop();
+    }
+    else if(infix[i]=='+' || infix[i]=='-' ||infix[i]=='*' || infix[i]=='/'||infix[i]=='%' || infix[i]=='^')
+    {
+    if((precedence(infix[i])>precedence(stack[top]))||(precedence(infix[i])==precedence(stack[top])&& associativity(infix[i])==1))
+    {
+        push(infix[i]);
+    }
+    else
+    {
+        ans=pop();
+        if(ans!=1)
+        {
+            printf("%c",ans);
+        }
+        push(infix[i]);
+    }
+    }
+    
+}
+while(top!=-1)
+{
+    printf("%c",pop());
+}
+ 
+
+    return 0; 
+}
+
+void push(int x)
+{
+    if(top==MAX-1)
+    {
+    printf("\nStack is overflowed");
+    return;
+    }
+    else
+    {
+        top++;
+        stack[top]=x;
+    }
+}
+char pop()
+{
+    
+    char value;
+    if(top==-1)
+    {
+    printf("\nStack is empty");
+    
+    }
+    else
+    {
+        value=stack[top];
+        top--;
+        
+        return value;
+    }
+}
+
+int precedence(char x)
+{
+    if(x=='^')
+    return 4;
+    if(x=='*'||x=='/'||x=='%')
+    return 3;
+    if(x=='+'||x=='-')
+    return 2;
+
+}
+int associativity(char x)
+{
+  if(x=='^')
+  return 1;
+  else
+  return 0;
+ 
+}
