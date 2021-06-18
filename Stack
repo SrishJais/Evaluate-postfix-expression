@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <math.h>
+#define MAX 100
+void push(int x);
+int pop();
+int stack[MAX];
+int top=-1;
+int main() 
+{
+char postfix[100];
+int i,top1,top2;
+printf("Enter postfix expression:");
+scanf("%s",postfix);
+for(i=0;postfix[i]!='\0';i++)
+{
+    if(postfix[i]>='0' && postfix[i]<='9')
+    {
+      push(postfix[i]-'0');
+    }
+    else
+    {
+        
+        top1=pop();
+        top2=pop();
+        if(top1!=-1 && top2!=-1)
+        {
+        switch(postfix[i])
+        {
+        case '+':
+             push(top2+top1);
+              break;
+        case '-':
+             push(top2-top1);
+             break;
+        case '*':
+             push(top2*top1);
+             break;
+        case '/':
+             push(top2/top1);
+             break;
+        case '^':
+             push(pow(top2,top1));
+            break;
+        }
+       }
+    }
+  
+}
+printf("\nResult=%d",stack[top]);  
+
+    return 0;
+}
+void push(int x)
+{
+    if(top==MAX-1)
+    {
+    printf("\nStack is overflowed");
+    return;
+    }
+    else
+    {
+        top++;
+        stack[top]=x;
+    }
+}
+int pop()
+{
+    int value;
+    if(top==-1)
+    {
+    printf("\nStack is empty");
+    return -1;
+    }
+    else
+    {
+        value=stack[top];
+        top--;
+        
+        return value;
+    }
+}
+
+
+
+
+
